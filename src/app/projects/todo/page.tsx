@@ -11,9 +11,13 @@ export default function TodoPage() {
   const addTask = () => {
     if (!input.trim()) return;
     const copy = [...tasks];
-    edit !== null
-      ? (copy[edit].text = input)
-      : copy.push({ text: input, done: false });
+
+    if (edit !== null) {
+      copy[edit].text = input;
+    } else {
+      copy.push({ text: input, done: false });
+    }
+
     setTasks(copy);
     setInput("");
     setEdit(null);
@@ -25,7 +29,10 @@ export default function TodoPage() {
     setTasks(copy);
   };
 
-  const remove = (i: number) => setTasks(tasks.filter((_, x) => x !== i));
+  const remove = (i: number) => {
+    setTasks(tasks.filter((_, x) => x !== i));
+  };
+
   const editTask = (i: number) => {
     setInput(tasks[i].text);
     setEdit(i);
@@ -42,7 +49,7 @@ export default function TodoPage() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Tulis tugas..."
-            className="flex-1 px-3 py-2 rounded text-white"
+            className="flex-1 px-3 py-2 rounded text-white bg-gray-800 outline-none"
           />
           <button
             onClick={addTask}
@@ -68,23 +75,15 @@ export default function TodoPage() {
                     onChange={() => toggle(i)}
                     className="accent-blue-500"
                   />
-                  <span
-                    className={t.done ? "line-through text-gray-400" : ""}
-                  >
+                  <span className={t.done ? "line-through text-gray-400" : ""}>
                     {t.text}
                   </span>
                 </div>
                 <div className="flex gap-2">
-                  <button
-                    onClick={() => editTask(i)}
-                    className="text-yellow-400"
-                  >
+                  <button onClick={() => editTask(i)} className="text-yellow-400">
                     ✏
                   </button>
-                  <button
-                    onClick={() => remove(i)}
-                    className="text-red-400"
-                  >
+                  <button onClick={() => remove(i)} className="text-red-400">
                     ❌
                   </button>
                 </div>
@@ -96,4 +95,3 @@ export default function TodoPage() {
     </main>
   );
 }
-
